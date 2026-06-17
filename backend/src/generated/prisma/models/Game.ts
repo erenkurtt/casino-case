@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums.js"
+import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model Game
@@ -543,6 +543,11 @@ export type GameScalarRelationFilter = {
   isNot?: Prisma.GameWhereInput
 }
 
+export type GameNullableScalarRelationFilter = {
+  is?: Prisma.GameWhereInput | null
+  isNot?: Prisma.GameWhereInput | null
+}
+
 export type GameCreateNestedManyWithoutCasinoInput = {
   create?: Prisma.XOR<Prisma.GameCreateWithoutCasinoInput, Prisma.GameUncheckedCreateWithoutCasinoInput> | Prisma.GameCreateWithoutCasinoInput[] | Prisma.GameUncheckedCreateWithoutCasinoInput[]
   connectOrCreate?: Prisma.GameCreateOrConnectWithoutCasinoInput | Prisma.GameCreateOrConnectWithoutCasinoInput[]
@@ -673,10 +678,12 @@ export type GameCreateNestedOneWithoutSpinHistoryInput = {
   connect?: Prisma.GameWhereUniqueInput
 }
 
-export type GameUpdateOneRequiredWithoutSpinHistoryNestedInput = {
+export type GameUpdateOneWithoutSpinHistoryNestedInput = {
   create?: Prisma.XOR<Prisma.GameCreateWithoutSpinHistoryInput, Prisma.GameUncheckedCreateWithoutSpinHistoryInput>
   connectOrCreate?: Prisma.GameCreateOrConnectWithoutSpinHistoryInput
   upsert?: Prisma.GameUpsertWithoutSpinHistoryInput
+  disconnect?: Prisma.GameWhereInput | boolean
+  delete?: Prisma.GameWhereInput | boolean
   connect?: Prisma.GameWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.GameUpdateToOneWithWhereWithoutSpinHistoryInput, Prisma.GameUpdateWithoutSpinHistoryInput>, Prisma.GameUncheckedUpdateWithoutSpinHistoryInput>
 }

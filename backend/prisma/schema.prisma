@@ -2,12 +2,12 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
+// importFileExtension = "ts" in client for wsl
 
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
   moduleFormat = "cjs"
-  importFileExtension = "ts"
 }
 
 datasource db {
@@ -54,6 +54,7 @@ model User {
   username     String   @unique @db.VarChar(100)
   passwordHash String   @map("password_hash") @db.VarChar(255)
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  balance      Decimal  @default(20.00) @db.Decimal(18, 2)
   updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   country    Country?           @relation(fields: [countryId], references: [id], onDelete: SetNull, onUpdate: Cascade)
@@ -121,18 +122,28 @@ model UserFavoriteGame {
 }
 
 model SpinHistory {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId     String   @map("user_id") @db.Uuid
-  gameId     String   @map("game_id") @db.Uuid
-  roundId    String   @unique @map("round_id") @db.VarChar(150)
-  betAmount  Decimal  @map("bet_amount") @db.Decimal(18, 2)
-  winAmount  Decimal  @default(0) @map("win_amount") @db.Decimal(18, 2)
-  currency   String   @default("TRY") @db.Char(3)
+  id     String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId String  @map("user_id") @db.Uuid
+  gameId String? @map("game_id") @db.Uuid
+
+  roundId String @unique @map("round_id") @db.VarChar(150)
+
+  betAmount     Decimal @map("bet_amount") @db.Decimal(18, 2)
+  winAmount     Decimal @default(0.00) @map("win_amount") @db.Decimal(18, 2)
+  netAmount     Decimal @default(0.00) @map("net_amount") @db.Decimal(18, 2)
+  balanceBefore Decimal @map("balance_before") @db.Decimal(18, 2)
+  balanceAfter  Decimal @map("balance_after") @db.Decimal(18, 2)
+
+  reel1 String @map("reel_1") @db.VarChar(50)
+  reel2 String @map("reel_2") @db.VarChar(50)
+  reel3 String @map("reel_3") @db.VarChar(50)
+
+  currency   String   @default("COI") @db.Char(3)
   resultData Json?    @map("result_data")
   spunAt     DateTime @default(now()) @map("spun_at") @db.Timestamptz(6)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  game Game @relation(fields: [gameId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  user User  @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  game Game? @relation(fields: [gameId], references: [id], onDelete: SetNull, onUpdate: Cascade)
 
   @@index([userId])
   @@index([gameId])

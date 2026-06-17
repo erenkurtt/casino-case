@@ -16,10 +16,10 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "../models.ts"
-import { type PrismaClient } from "./class.ts"
+import type * as Prisma from "../models.js"
+import { type PrismaClient } from "./class.js"
 
-export type * from '../models.ts'
+export type * from '../models.js'
 
 export type DMMF = typeof runtime.DMMF
 
@@ -1078,6 +1078,7 @@ export const UserScalarFieldEnum = {
   username: 'username',
   passwordHash: 'passwordHash',
   createdAt: 'createdAt',
+  balance: 'balance',
   updatedAt: 'updatedAt'
 } as const
 
@@ -1127,6 +1128,12 @@ export const SpinHistoryScalarFieldEnum = {
   roundId: 'roundId',
   betAmount: 'betAmount',
   winAmount: 'winAmount',
+  netAmount: 'netAmount',
+  balanceBefore: 'balanceBefore',
+  balanceAfter: 'balanceAfter',
+  reel1: 'reel1',
+  reel2: 'reel2',
+  reel3: 'reel3',
   currency: 'currency',
   resultData: 'resultData',
   spunAt: 'spunAt'
@@ -1211,6 +1218,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1228,20 +1249,6 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 

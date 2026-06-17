@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums.js"
+import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model SpinHistory
@@ -29,11 +29,17 @@ export type AggregateSpinHistory = {
 export type SpinHistoryAvgAggregateOutputType = {
   betAmount: runtime.Decimal | null
   winAmount: runtime.Decimal | null
+  netAmount: runtime.Decimal | null
+  balanceBefore: runtime.Decimal | null
+  balanceAfter: runtime.Decimal | null
 }
 
 export type SpinHistorySumAggregateOutputType = {
   betAmount: runtime.Decimal | null
   winAmount: runtime.Decimal | null
+  netAmount: runtime.Decimal | null
+  balanceBefore: runtime.Decimal | null
+  balanceAfter: runtime.Decimal | null
 }
 
 export type SpinHistoryMinAggregateOutputType = {
@@ -43,6 +49,12 @@ export type SpinHistoryMinAggregateOutputType = {
   roundId: string | null
   betAmount: runtime.Decimal | null
   winAmount: runtime.Decimal | null
+  netAmount: runtime.Decimal | null
+  balanceBefore: runtime.Decimal | null
+  balanceAfter: runtime.Decimal | null
+  reel1: string | null
+  reel2: string | null
+  reel3: string | null
   currency: string | null
   spunAt: Date | null
 }
@@ -54,6 +66,12 @@ export type SpinHistoryMaxAggregateOutputType = {
   roundId: string | null
   betAmount: runtime.Decimal | null
   winAmount: runtime.Decimal | null
+  netAmount: runtime.Decimal | null
+  balanceBefore: runtime.Decimal | null
+  balanceAfter: runtime.Decimal | null
+  reel1: string | null
+  reel2: string | null
+  reel3: string | null
   currency: string | null
   spunAt: Date | null
 }
@@ -65,6 +83,12 @@ export type SpinHistoryCountAggregateOutputType = {
   roundId: number
   betAmount: number
   winAmount: number
+  netAmount: number
+  balanceBefore: number
+  balanceAfter: number
+  reel1: number
+  reel2: number
+  reel3: number
   currency: number
   resultData: number
   spunAt: number
@@ -75,11 +99,17 @@ export type SpinHistoryCountAggregateOutputType = {
 export type SpinHistoryAvgAggregateInputType = {
   betAmount?: true
   winAmount?: true
+  netAmount?: true
+  balanceBefore?: true
+  balanceAfter?: true
 }
 
 export type SpinHistorySumAggregateInputType = {
   betAmount?: true
   winAmount?: true
+  netAmount?: true
+  balanceBefore?: true
+  balanceAfter?: true
 }
 
 export type SpinHistoryMinAggregateInputType = {
@@ -89,6 +119,12 @@ export type SpinHistoryMinAggregateInputType = {
   roundId?: true
   betAmount?: true
   winAmount?: true
+  netAmount?: true
+  balanceBefore?: true
+  balanceAfter?: true
+  reel1?: true
+  reel2?: true
+  reel3?: true
   currency?: true
   spunAt?: true
 }
@@ -100,6 +136,12 @@ export type SpinHistoryMaxAggregateInputType = {
   roundId?: true
   betAmount?: true
   winAmount?: true
+  netAmount?: true
+  balanceBefore?: true
+  balanceAfter?: true
+  reel1?: true
+  reel2?: true
+  reel3?: true
   currency?: true
   spunAt?: true
 }
@@ -111,6 +153,12 @@ export type SpinHistoryCountAggregateInputType = {
   roundId?: true
   betAmount?: true
   winAmount?: true
+  netAmount?: true
+  balanceBefore?: true
+  balanceAfter?: true
+  reel1?: true
+  reel2?: true
+  reel3?: true
   currency?: true
   resultData?: true
   spunAt?: true
@@ -206,10 +254,16 @@ export type SpinHistoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type SpinHistoryGroupByOutputType = {
   id: string
   userId: string
-  gameId: string
+  gameId: string | null
   roundId: string
   betAmount: runtime.Decimal
   winAmount: runtime.Decimal
+  netAmount: runtime.Decimal
+  balanceBefore: runtime.Decimal
+  balanceAfter: runtime.Decimal
+  reel1: string
+  reel2: string
+  reel3: string
   currency: string
   resultData: runtime.JsonValue | null
   spunAt: Date
@@ -241,24 +295,36 @@ export type SpinHistoryWhereInput = {
   NOT?: Prisma.SpinHistoryWhereInput | Prisma.SpinHistoryWhereInput[]
   id?: Prisma.UuidFilter<"SpinHistory"> | string
   userId?: Prisma.UuidFilter<"SpinHistory"> | string
-  gameId?: Prisma.UuidFilter<"SpinHistory"> | string
+  gameId?: Prisma.UuidNullableFilter<"SpinHistory"> | string | null
   roundId?: Prisma.StringFilter<"SpinHistory"> | string
   betAmount?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFilter<"SpinHistory"> | string
+  reel2?: Prisma.StringFilter<"SpinHistory"> | string
+  reel3?: Prisma.StringFilter<"SpinHistory"> | string
   currency?: Prisma.StringFilter<"SpinHistory"> | string
   resultData?: Prisma.JsonNullableFilter<"SpinHistory">
   spunAt?: Prisma.DateTimeFilter<"SpinHistory"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  game?: Prisma.XOR<Prisma.GameScalarRelationFilter, Prisma.GameWhereInput>
+  game?: Prisma.XOR<Prisma.GameNullableScalarRelationFilter, Prisma.GameWhereInput> | null
 }
 
 export type SpinHistoryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  gameId?: Prisma.SortOrder
+  gameId?: Prisma.SortOrderInput | Prisma.SortOrder
   roundId?: Prisma.SortOrder
   betAmount?: Prisma.SortOrder
   winAmount?: Prisma.SortOrder
+  netAmount?: Prisma.SortOrder
+  balanceBefore?: Prisma.SortOrder
+  balanceAfter?: Prisma.SortOrder
+  reel1?: Prisma.SortOrder
+  reel2?: Prisma.SortOrder
+  reel3?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   resultData?: Prisma.SortOrderInput | Prisma.SortOrder
   spunAt?: Prisma.SortOrder
@@ -273,23 +339,35 @@ export type SpinHistoryWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.SpinHistoryWhereInput[]
   NOT?: Prisma.SpinHistoryWhereInput | Prisma.SpinHistoryWhereInput[]
   userId?: Prisma.UuidFilter<"SpinHistory"> | string
-  gameId?: Prisma.UuidFilter<"SpinHistory"> | string
+  gameId?: Prisma.UuidNullableFilter<"SpinHistory"> | string | null
   betAmount?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFilter<"SpinHistory"> | string
+  reel2?: Prisma.StringFilter<"SpinHistory"> | string
+  reel3?: Prisma.StringFilter<"SpinHistory"> | string
   currency?: Prisma.StringFilter<"SpinHistory"> | string
   resultData?: Prisma.JsonNullableFilter<"SpinHistory">
   spunAt?: Prisma.DateTimeFilter<"SpinHistory"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  game?: Prisma.XOR<Prisma.GameScalarRelationFilter, Prisma.GameWhereInput>
+  game?: Prisma.XOR<Prisma.GameNullableScalarRelationFilter, Prisma.GameWhereInput> | null
 }, "id" | "roundId">
 
 export type SpinHistoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  gameId?: Prisma.SortOrder
+  gameId?: Prisma.SortOrderInput | Prisma.SortOrder
   roundId?: Prisma.SortOrder
   betAmount?: Prisma.SortOrder
   winAmount?: Prisma.SortOrder
+  netAmount?: Prisma.SortOrder
+  balanceBefore?: Prisma.SortOrder
+  balanceAfter?: Prisma.SortOrder
+  reel1?: Prisma.SortOrder
+  reel2?: Prisma.SortOrder
+  reel3?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   resultData?: Prisma.SortOrderInput | Prisma.SortOrder
   spunAt?: Prisma.SortOrder
@@ -306,10 +384,16 @@ export type SpinHistoryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SpinHistoryScalarWhereWithAggregatesInput | Prisma.SpinHistoryScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"SpinHistory"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"SpinHistory"> | string
-  gameId?: Prisma.UuidWithAggregatesFilter<"SpinHistory"> | string
+  gameId?: Prisma.UuidNullableWithAggregatesFilter<"SpinHistory"> | string | null
   roundId?: Prisma.StringWithAggregatesFilter<"SpinHistory"> | string
   betAmount?: Prisma.DecimalWithAggregatesFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalWithAggregatesFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalWithAggregatesFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalWithAggregatesFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalWithAggregatesFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringWithAggregatesFilter<"SpinHistory"> | string
+  reel2?: Prisma.StringWithAggregatesFilter<"SpinHistory"> | string
+  reel3?: Prisma.StringWithAggregatesFilter<"SpinHistory"> | string
   currency?: Prisma.StringWithAggregatesFilter<"SpinHistory"> | string
   resultData?: Prisma.JsonNullableWithAggregatesFilter<"SpinHistory">
   spunAt?: Prisma.DateTimeWithAggregatesFilter<"SpinHistory"> | Date | string
@@ -320,20 +404,32 @@ export type SpinHistoryCreateInput = {
   roundId: string
   betAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1: string
+  reel2: string
+  reel3: string
   currency?: string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutSpinHistoryInput
-  game: Prisma.GameCreateNestedOneWithoutSpinHistoryInput
+  game?: Prisma.GameCreateNestedOneWithoutSpinHistoryInput
 }
 
 export type SpinHistoryUncheckedCreateInput = {
   id?: string
   userId: string
-  gameId: string
+  gameId?: string | null
   roundId: string
   betAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1: string
+  reel2: string
+  reel3: string
   currency?: string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Date | string
@@ -344,20 +440,32 @@ export type SpinHistoryUpdateInput = {
   roundId?: Prisma.StringFieldUpdateOperationsInput | string
   betAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFieldUpdateOperationsInput | string
+  reel2?: Prisma.StringFieldUpdateOperationsInput | string
+  reel3?: Prisma.StringFieldUpdateOperationsInput | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutSpinHistoryNestedInput
-  game?: Prisma.GameUpdateOneRequiredWithoutSpinHistoryNestedInput
+  game?: Prisma.GameUpdateOneWithoutSpinHistoryNestedInput
 }
 
 export type SpinHistoryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  gameId?: Prisma.StringFieldUpdateOperationsInput | string
+  gameId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roundId?: Prisma.StringFieldUpdateOperationsInput | string
   betAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFieldUpdateOperationsInput | string
+  reel2?: Prisma.StringFieldUpdateOperationsInput | string
+  reel3?: Prisma.StringFieldUpdateOperationsInput | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -366,10 +474,16 @@ export type SpinHistoryUncheckedUpdateInput = {
 export type SpinHistoryCreateManyInput = {
   id?: string
   userId: string
-  gameId: string
+  gameId?: string | null
   roundId: string
   betAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1: string
+  reel2: string
+  reel3: string
   currency?: string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Date | string
@@ -380,6 +494,12 @@ export type SpinHistoryUpdateManyMutationInput = {
   roundId?: Prisma.StringFieldUpdateOperationsInput | string
   betAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFieldUpdateOperationsInput | string
+  reel2?: Prisma.StringFieldUpdateOperationsInput | string
+  reel3?: Prisma.StringFieldUpdateOperationsInput | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -388,10 +508,16 @@ export type SpinHistoryUpdateManyMutationInput = {
 export type SpinHistoryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  gameId?: Prisma.StringFieldUpdateOperationsInput | string
+  gameId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roundId?: Prisma.StringFieldUpdateOperationsInput | string
   betAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFieldUpdateOperationsInput | string
+  reel2?: Prisma.StringFieldUpdateOperationsInput | string
+  reel3?: Prisma.StringFieldUpdateOperationsInput | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -414,6 +540,12 @@ export type SpinHistoryCountOrderByAggregateInput = {
   roundId?: Prisma.SortOrder
   betAmount?: Prisma.SortOrder
   winAmount?: Prisma.SortOrder
+  netAmount?: Prisma.SortOrder
+  balanceBefore?: Prisma.SortOrder
+  balanceAfter?: Prisma.SortOrder
+  reel1?: Prisma.SortOrder
+  reel2?: Prisma.SortOrder
+  reel3?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   resultData?: Prisma.SortOrder
   spunAt?: Prisma.SortOrder
@@ -422,6 +554,9 @@ export type SpinHistoryCountOrderByAggregateInput = {
 export type SpinHistoryAvgOrderByAggregateInput = {
   betAmount?: Prisma.SortOrder
   winAmount?: Prisma.SortOrder
+  netAmount?: Prisma.SortOrder
+  balanceBefore?: Prisma.SortOrder
+  balanceAfter?: Prisma.SortOrder
 }
 
 export type SpinHistoryMaxOrderByAggregateInput = {
@@ -431,6 +566,12 @@ export type SpinHistoryMaxOrderByAggregateInput = {
   roundId?: Prisma.SortOrder
   betAmount?: Prisma.SortOrder
   winAmount?: Prisma.SortOrder
+  netAmount?: Prisma.SortOrder
+  balanceBefore?: Prisma.SortOrder
+  balanceAfter?: Prisma.SortOrder
+  reel1?: Prisma.SortOrder
+  reel2?: Prisma.SortOrder
+  reel3?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   spunAt?: Prisma.SortOrder
 }
@@ -442,6 +583,12 @@ export type SpinHistoryMinOrderByAggregateInput = {
   roundId?: Prisma.SortOrder
   betAmount?: Prisma.SortOrder
   winAmount?: Prisma.SortOrder
+  netAmount?: Prisma.SortOrder
+  balanceBefore?: Prisma.SortOrder
+  balanceAfter?: Prisma.SortOrder
+  reel1?: Prisma.SortOrder
+  reel2?: Prisma.SortOrder
+  reel3?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   spunAt?: Prisma.SortOrder
 }
@@ -449,6 +596,9 @@ export type SpinHistoryMinOrderByAggregateInput = {
 export type SpinHistorySumOrderByAggregateInput = {
   betAmount?: Prisma.SortOrder
   winAmount?: Prisma.SortOrder
+  netAmount?: Prisma.SortOrder
+  balanceBefore?: Prisma.SortOrder
+  balanceAfter?: Prisma.SortOrder
 }
 
 export type SpinHistoryCreateNestedManyWithoutUserInput = {
@@ -535,31 +685,35 @@ export type SpinHistoryUncheckedUpdateManyWithoutGameNestedInput = {
   deleteMany?: Prisma.SpinHistoryScalarWhereInput | Prisma.SpinHistoryScalarWhereInput[]
 }
 
-export type DecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
-}
-
 export type SpinHistoryCreateWithoutUserInput = {
   id?: string
   roundId: string
   betAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1: string
+  reel2: string
+  reel3: string
   currency?: string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Date | string
-  game: Prisma.GameCreateNestedOneWithoutSpinHistoryInput
+  game?: Prisma.GameCreateNestedOneWithoutSpinHistoryInput
 }
 
 export type SpinHistoryUncheckedCreateWithoutUserInput = {
   id?: string
-  gameId: string
+  gameId?: string | null
   roundId: string
   betAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1: string
+  reel2: string
+  reel3: string
   currency?: string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Date | string
@@ -597,10 +751,16 @@ export type SpinHistoryScalarWhereInput = {
   NOT?: Prisma.SpinHistoryScalarWhereInput | Prisma.SpinHistoryScalarWhereInput[]
   id?: Prisma.UuidFilter<"SpinHistory"> | string
   userId?: Prisma.UuidFilter<"SpinHistory"> | string
-  gameId?: Prisma.UuidFilter<"SpinHistory"> | string
+  gameId?: Prisma.UuidNullableFilter<"SpinHistory"> | string | null
   roundId?: Prisma.StringFilter<"SpinHistory"> | string
   betAmount?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFilter<"SpinHistory"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFilter<"SpinHistory"> | string
+  reel2?: Prisma.StringFilter<"SpinHistory"> | string
+  reel3?: Prisma.StringFilter<"SpinHistory"> | string
   currency?: Prisma.StringFilter<"SpinHistory"> | string
   resultData?: Prisma.JsonNullableFilter<"SpinHistory">
   spunAt?: Prisma.DateTimeFilter<"SpinHistory"> | Date | string
@@ -611,6 +771,12 @@ export type SpinHistoryCreateWithoutGameInput = {
   roundId: string
   betAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1: string
+  reel2: string
+  reel3: string
   currency?: string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Date | string
@@ -623,6 +789,12 @@ export type SpinHistoryUncheckedCreateWithoutGameInput = {
   roundId: string
   betAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1: string
+  reel2: string
+  reel3: string
   currency?: string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Date | string
@@ -656,10 +828,16 @@ export type SpinHistoryUpdateManyWithWhereWithoutGameInput = {
 
 export type SpinHistoryCreateManyUserInput = {
   id?: string
-  gameId: string
+  gameId?: string | null
   roundId: string
   betAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1: string
+  reel2: string
+  reel3: string
   currency?: string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Date | string
@@ -670,18 +848,30 @@ export type SpinHistoryUpdateWithoutUserInput = {
   roundId?: Prisma.StringFieldUpdateOperationsInput | string
   betAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFieldUpdateOperationsInput | string
+  reel2?: Prisma.StringFieldUpdateOperationsInput | string
+  reel3?: Prisma.StringFieldUpdateOperationsInput | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  game?: Prisma.GameUpdateOneRequiredWithoutSpinHistoryNestedInput
+  game?: Prisma.GameUpdateOneWithoutSpinHistoryNestedInput
 }
 
 export type SpinHistoryUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  gameId?: Prisma.StringFieldUpdateOperationsInput | string
+  gameId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roundId?: Prisma.StringFieldUpdateOperationsInput | string
   betAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFieldUpdateOperationsInput | string
+  reel2?: Prisma.StringFieldUpdateOperationsInput | string
+  reel3?: Prisma.StringFieldUpdateOperationsInput | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -689,10 +879,16 @@ export type SpinHistoryUncheckedUpdateWithoutUserInput = {
 
 export type SpinHistoryUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  gameId?: Prisma.StringFieldUpdateOperationsInput | string
+  gameId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roundId?: Prisma.StringFieldUpdateOperationsInput | string
   betAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFieldUpdateOperationsInput | string
+  reel2?: Prisma.StringFieldUpdateOperationsInput | string
+  reel3?: Prisma.StringFieldUpdateOperationsInput | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -704,6 +900,12 @@ export type SpinHistoryCreateManyGameInput = {
   roundId: string
   betAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1: string
+  reel2: string
+  reel3: string
   currency?: string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Date | string
@@ -714,6 +916,12 @@ export type SpinHistoryUpdateWithoutGameInput = {
   roundId?: Prisma.StringFieldUpdateOperationsInput | string
   betAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFieldUpdateOperationsInput | string
+  reel2?: Prisma.StringFieldUpdateOperationsInput | string
+  reel3?: Prisma.StringFieldUpdateOperationsInput | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -726,6 +934,12 @@ export type SpinHistoryUncheckedUpdateWithoutGameInput = {
   roundId?: Prisma.StringFieldUpdateOperationsInput | string
   betAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFieldUpdateOperationsInput | string
+  reel2?: Prisma.StringFieldUpdateOperationsInput | string
+  reel3?: Prisma.StringFieldUpdateOperationsInput | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -737,6 +951,12 @@ export type SpinHistoryUncheckedUpdateManyWithoutGameInput = {
   roundId?: Prisma.StringFieldUpdateOperationsInput | string
   betAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   winAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceBefore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  balanceAfter?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reel1?: Prisma.StringFieldUpdateOperationsInput | string
+  reel2?: Prisma.StringFieldUpdateOperationsInput | string
+  reel3?: Prisma.StringFieldUpdateOperationsInput | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   resultData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   spunAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -751,11 +971,17 @@ export type SpinHistorySelect<ExtArgs extends runtime.Types.Extensions.InternalA
   roundId?: boolean
   betAmount?: boolean
   winAmount?: boolean
+  netAmount?: boolean
+  balanceBefore?: boolean
+  balanceAfter?: boolean
+  reel1?: boolean
+  reel2?: boolean
+  reel3?: boolean
   currency?: boolean
   resultData?: boolean
   spunAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  game?: boolean | Prisma.GameDefaultArgs<ExtArgs>
+  game?: boolean | Prisma.SpinHistory$gameArgs<ExtArgs>
 }, ExtArgs["result"]["spinHistory"]>
 
 export type SpinHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -765,11 +991,17 @@ export type SpinHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   roundId?: boolean
   betAmount?: boolean
   winAmount?: boolean
+  netAmount?: boolean
+  balanceBefore?: boolean
+  balanceAfter?: boolean
+  reel1?: boolean
+  reel2?: boolean
+  reel3?: boolean
   currency?: boolean
   resultData?: boolean
   spunAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  game?: boolean | Prisma.GameDefaultArgs<ExtArgs>
+  game?: boolean | Prisma.SpinHistory$gameArgs<ExtArgs>
 }, ExtArgs["result"]["spinHistory"]>
 
 export type SpinHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -779,11 +1011,17 @@ export type SpinHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   roundId?: boolean
   betAmount?: boolean
   winAmount?: boolean
+  netAmount?: boolean
+  balanceBefore?: boolean
+  balanceAfter?: boolean
+  reel1?: boolean
+  reel2?: boolean
+  reel3?: boolean
   currency?: boolean
   resultData?: boolean
   spunAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  game?: boolean | Prisma.GameDefaultArgs<ExtArgs>
+  game?: boolean | Prisma.SpinHistory$gameArgs<ExtArgs>
 }, ExtArgs["result"]["spinHistory"]>
 
 export type SpinHistorySelectScalar = {
@@ -793,38 +1031,50 @@ export type SpinHistorySelectScalar = {
   roundId?: boolean
   betAmount?: boolean
   winAmount?: boolean
+  netAmount?: boolean
+  balanceBefore?: boolean
+  balanceAfter?: boolean
+  reel1?: boolean
+  reel2?: boolean
+  reel3?: boolean
   currency?: boolean
   resultData?: boolean
   spunAt?: boolean
 }
 
-export type SpinHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "gameId" | "roundId" | "betAmount" | "winAmount" | "currency" | "resultData" | "spunAt", ExtArgs["result"]["spinHistory"]>
+export type SpinHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "gameId" | "roundId" | "betAmount" | "winAmount" | "netAmount" | "balanceBefore" | "balanceAfter" | "reel1" | "reel2" | "reel3" | "currency" | "resultData" | "spunAt", ExtArgs["result"]["spinHistory"]>
 export type SpinHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  game?: boolean | Prisma.GameDefaultArgs<ExtArgs>
+  game?: boolean | Prisma.SpinHistory$gameArgs<ExtArgs>
 }
 export type SpinHistoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  game?: boolean | Prisma.GameDefaultArgs<ExtArgs>
+  game?: boolean | Prisma.SpinHistory$gameArgs<ExtArgs>
 }
 export type SpinHistoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  game?: boolean | Prisma.GameDefaultArgs<ExtArgs>
+  game?: boolean | Prisma.SpinHistory$gameArgs<ExtArgs>
 }
 
 export type $SpinHistoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SpinHistory"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
-    game: Prisma.$GamePayload<ExtArgs>
+    game: Prisma.$GamePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    gameId: string
+    gameId: string | null
     roundId: string
     betAmount: runtime.Decimal
     winAmount: runtime.Decimal
+    netAmount: runtime.Decimal
+    balanceBefore: runtime.Decimal
+    balanceAfter: runtime.Decimal
+    reel1: string
+    reel2: string
+    reel3: string
     currency: string
     resultData: runtime.JsonValue | null
     spunAt: Date
@@ -1223,7 +1473,7 @@ readonly fields: SpinHistoryFieldRefs;
 export interface Prisma__SpinHistoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  game<T extends Prisma.GameDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GameDefaultArgs<ExtArgs>>): Prisma.Prisma__GameClient<runtime.Types.Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  game<T extends Prisma.SpinHistory$gameArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SpinHistory$gameArgs<ExtArgs>>): Prisma.Prisma__GameClient<runtime.Types.Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1259,6 +1509,12 @@ export interface SpinHistoryFieldRefs {
   readonly roundId: Prisma.FieldRef<"SpinHistory", 'String'>
   readonly betAmount: Prisma.FieldRef<"SpinHistory", 'Decimal'>
   readonly winAmount: Prisma.FieldRef<"SpinHistory", 'Decimal'>
+  readonly netAmount: Prisma.FieldRef<"SpinHistory", 'Decimal'>
+  readonly balanceBefore: Prisma.FieldRef<"SpinHistory", 'Decimal'>
+  readonly balanceAfter: Prisma.FieldRef<"SpinHistory", 'Decimal'>
+  readonly reel1: Prisma.FieldRef<"SpinHistory", 'String'>
+  readonly reel2: Prisma.FieldRef<"SpinHistory", 'String'>
+  readonly reel3: Prisma.FieldRef<"SpinHistory", 'String'>
   readonly currency: Prisma.FieldRef<"SpinHistory", 'String'>
   readonly resultData: Prisma.FieldRef<"SpinHistory", 'Json'>
   readonly spunAt: Prisma.FieldRef<"SpinHistory", 'DateTime'>
@@ -1660,6 +1916,25 @@ export type SpinHistoryDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many SpinHistories to delete.
    */
   limit?: number
+}
+
+/**
+ * SpinHistory.game
+ */
+export type SpinHistory$gameArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Game
+   */
+  select?: Prisma.GameSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Game
+   */
+  omit?: Prisma.GameOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GameInclude<ExtArgs> | null
+  where?: Prisma.GameWhereInput
 }
 
 /**

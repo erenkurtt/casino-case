@@ -8,12 +8,12 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Casino.ts'
-export type * from './models/GameType.ts'
-export type * from './models/Country.ts'
-export type * from './models/User.ts'
-export type * from './models/Game.ts'
-export type * from './models/GameCountry.ts'
-export type * from './models/UserFavoriteGame.ts'
-export type * from './models/SpinHistory.ts'
-export type * from './commonInputTypes.ts'
+export type * from './models/Casino.js'
+export type * from './models/GameType.js'
+export type * from './models/Country.js'
+export type * from './models/User.js'
+export type * from './models/Game.js'
+export type * from './models/GameCountry.js'
+export type * from './models/UserFavoriteGame.js'
+export type * from './models/SpinHistory.js'
+export type * from './commonInputTypes.js'

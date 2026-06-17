@@ -17,8 +17,8 @@
 
 import * as runtime from "@prisma/client/runtime/index-browser"
 
-export type * from '../models.ts'
-export type * from './prismaNamespace.ts'
+export type * from '../models.js'
+export type * from './prismaNamespace.js'
 
 export const Decimal = runtime.Decimal
 
@@ -113,6 +113,7 @@ export const UserScalarFieldEnum = {
   username: 'username',
   passwordHash: 'passwordHash',
   createdAt: 'createdAt',
+  balance: 'balance',
   updatedAt: 'updatedAt'
 } as const
 
@@ -162,6 +163,12 @@ export const SpinHistoryScalarFieldEnum = {
   roundId: 'roundId',
   betAmount: 'betAmount',
   winAmount: 'winAmount',
+  netAmount: 'netAmount',
+  balanceBefore: 'balanceBefore',
+  balanceAfter: 'balanceAfter',
+  reel1: 'reel1',
+  reel2: 'reel2',
+  reel3: 'reel3',
   currency: 'currency',
   resultData: 'resultData',
   spunAt: 'spunAt'

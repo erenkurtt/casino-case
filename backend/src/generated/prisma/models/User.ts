@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums.js"
+import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model User
@@ -20,8 +20,18 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  balance: runtime.Decimal | null
+}
+
+export type UserSumAggregateOutputType = {
+  balance: runtime.Decimal | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -31,6 +41,7 @@ export type UserMinAggregateOutputType = {
   username: string | null
   passwordHash: string | null
   createdAt: Date | null
+  balance: runtime.Decimal | null
   updatedAt: Date | null
 }
 
@@ -41,6 +52,7 @@ export type UserMaxAggregateOutputType = {
   username: string | null
   passwordHash: string | null
   createdAt: Date | null
+  balance: runtime.Decimal | null
   updatedAt: Date | null
 }
 
@@ -51,10 +63,19 @@ export type UserCountAggregateOutputType = {
   username: number
   passwordHash: number
   createdAt: number
+  balance: number
   updatedAt: number
   _all: number
 }
 
+
+export type UserAvgAggregateInputType = {
+  balance?: true
+}
+
+export type UserSumAggregateInputType = {
+  balance?: true
+}
 
 export type UserMinAggregateInputType = {
   id?: true
@@ -63,6 +84,7 @@ export type UserMinAggregateInputType = {
   username?: true
   passwordHash?: true
   createdAt?: true
+  balance?: true
   updatedAt?: true
 }
 
@@ -73,6 +95,7 @@ export type UserMaxAggregateInputType = {
   username?: true
   passwordHash?: true
   createdAt?: true
+  balance?: true
   updatedAt?: true
 }
 
@@ -83,6 +106,7 @@ export type UserCountAggregateInputType = {
   username?: true
   passwordHash?: true
   createdAt?: true
+  balance?: true
   updatedAt?: true
   _all?: true
 }
@@ -125,6 +149,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -155,6 +191,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -166,8 +204,11 @@ export type UserGroupByOutputType = {
   username: string
   passwordHash: string
   createdAt: Date
+  balance: runtime.Decimal
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -197,6 +238,7 @@ export type UserWhereInput = {
   username?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  balance?: Prisma.DecimalFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   country?: Prisma.XOR<Prisma.CountryNullableScalarRelationFilter, Prisma.CountryWhereInput> | null
   favorites?: Prisma.UserFavoriteGameListRelationFilter
@@ -210,6 +252,7 @@ export type UserOrderByWithRelationInput = {
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  balance?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   country?: Prisma.CountryOrderByWithRelationInput
   favorites?: Prisma.UserFavoriteGameOrderByRelationAggregateInput
@@ -226,6 +269,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   countryId?: Prisma.UuidNullableFilter<"User"> | string | null
   passwordHash?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  balance?: Prisma.DecimalFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   country?: Prisma.XOR<Prisma.CountryNullableScalarRelationFilter, Prisma.CountryWhereInput> | null
   favorites?: Prisma.UserFavoriteGameListRelationFilter
@@ -239,10 +283,13 @@ export type UserOrderByWithAggregationInput = {
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  balance?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -255,6 +302,7 @@ export type UserScalarWhereWithAggregatesInput = {
   username?: Prisma.StringWithAggregatesFilter<"User"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  balance?: Prisma.DecimalWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
 
@@ -264,6 +312,7 @@ export type UserCreateInput = {
   username: string
   passwordHash: string
   createdAt?: Date | string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Date | string
   country?: Prisma.CountryCreateNestedOneWithoutUsersInput
   favorites?: Prisma.UserFavoriteGameCreateNestedManyWithoutUserInput
@@ -277,6 +326,7 @@ export type UserUncheckedCreateInput = {
   username: string
   passwordHash: string
   createdAt?: Date | string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Date | string
   favorites?: Prisma.UserFavoriteGameUncheckedCreateNestedManyWithoutUserInput
   spinHistory?: Prisma.SpinHistoryUncheckedCreateNestedManyWithoutUserInput
@@ -288,6 +338,7 @@ export type UserUpdateInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   country?: Prisma.CountryUpdateOneWithoutUsersNestedInput
   favorites?: Prisma.UserFavoriteGameUpdateManyWithoutUserNestedInput
@@ -301,6 +352,7 @@ export type UserUncheckedUpdateInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favorites?: Prisma.UserFavoriteGameUncheckedUpdateManyWithoutUserNestedInput
   spinHistory?: Prisma.SpinHistoryUncheckedUpdateManyWithoutUserNestedInput
@@ -313,6 +365,7 @@ export type UserCreateManyInput = {
   username: string
   passwordHash: string
   createdAt?: Date | string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Date | string
 }
 
@@ -322,6 +375,7 @@ export type UserUpdateManyMutationInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -332,6 +386,7 @@ export type UserUncheckedUpdateManyInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -352,7 +407,12 @@ export type UserCountOrderByAggregateInput = {
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  balance?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  balance?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -362,6 +422,7 @@ export type UserMaxOrderByAggregateInput = {
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  balance?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -372,7 +433,12 @@ export type UserMinOrderByAggregateInput = {
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  balance?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  balance?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -422,6 +488,14 @@ export type UserUncheckedUpdateManyWithoutCountryNestedInput = {
   deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
@@ -460,6 +534,7 @@ export type UserCreateWithoutCountryInput = {
   username: string
   passwordHash: string
   createdAt?: Date | string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Date | string
   favorites?: Prisma.UserFavoriteGameCreateNestedManyWithoutUserInput
   spinHistory?: Prisma.SpinHistoryCreateNestedManyWithoutUserInput
@@ -471,6 +546,7 @@ export type UserUncheckedCreateWithoutCountryInput = {
   username: string
   passwordHash: string
   createdAt?: Date | string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Date | string
   favorites?: Prisma.UserFavoriteGameUncheckedCreateNestedManyWithoutUserInput
   spinHistory?: Prisma.SpinHistoryUncheckedCreateNestedManyWithoutUserInput
@@ -512,6 +588,7 @@ export type UserScalarWhereInput = {
   username?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  balance?: Prisma.DecimalFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }
 
@@ -521,6 +598,7 @@ export type UserCreateWithoutFavoritesInput = {
   username: string
   passwordHash: string
   createdAt?: Date | string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Date | string
   country?: Prisma.CountryCreateNestedOneWithoutUsersInput
   spinHistory?: Prisma.SpinHistoryCreateNestedManyWithoutUserInput
@@ -533,6 +611,7 @@ export type UserUncheckedCreateWithoutFavoritesInput = {
   username: string
   passwordHash: string
   createdAt?: Date | string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Date | string
   spinHistory?: Prisma.SpinHistoryUncheckedCreateNestedManyWithoutUserInput
 }
@@ -559,6 +638,7 @@ export type UserUpdateWithoutFavoritesInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   country?: Prisma.CountryUpdateOneWithoutUsersNestedInput
   spinHistory?: Prisma.SpinHistoryUpdateManyWithoutUserNestedInput
@@ -571,6 +651,7 @@ export type UserUncheckedUpdateWithoutFavoritesInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   spinHistory?: Prisma.SpinHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -581,6 +662,7 @@ export type UserCreateWithoutSpinHistoryInput = {
   username: string
   passwordHash: string
   createdAt?: Date | string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Date | string
   country?: Prisma.CountryCreateNestedOneWithoutUsersInput
   favorites?: Prisma.UserFavoriteGameCreateNestedManyWithoutUserInput
@@ -593,6 +675,7 @@ export type UserUncheckedCreateWithoutSpinHistoryInput = {
   username: string
   passwordHash: string
   createdAt?: Date | string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Date | string
   favorites?: Prisma.UserFavoriteGameUncheckedCreateNestedManyWithoutUserInput
 }
@@ -619,6 +702,7 @@ export type UserUpdateWithoutSpinHistoryInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   country?: Prisma.CountryUpdateOneWithoutUsersNestedInput
   favorites?: Prisma.UserFavoriteGameUpdateManyWithoutUserNestedInput
@@ -631,6 +715,7 @@ export type UserUncheckedUpdateWithoutSpinHistoryInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favorites?: Prisma.UserFavoriteGameUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -641,6 +726,7 @@ export type UserCreateManyCountryInput = {
   username: string
   passwordHash: string
   createdAt?: Date | string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Date | string
 }
 
@@ -650,6 +736,7 @@ export type UserUpdateWithoutCountryInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favorites?: Prisma.UserFavoriteGameUpdateManyWithoutUserNestedInput
   spinHistory?: Prisma.SpinHistoryUpdateManyWithoutUserNestedInput
@@ -661,6 +748,7 @@ export type UserUncheckedUpdateWithoutCountryInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favorites?: Prisma.UserFavoriteGameUncheckedUpdateManyWithoutUserNestedInput
   spinHistory?: Prisma.SpinHistoryUncheckedUpdateManyWithoutUserNestedInput
@@ -672,6 +760,7 @@ export type UserUncheckedUpdateManyWithoutCountryInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -722,6 +811,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   username?: boolean
   passwordHash?: boolean
   createdAt?: boolean
+  balance?: boolean
   updatedAt?: boolean
   country?: boolean | Prisma.User$countryArgs<ExtArgs>
   favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>
@@ -736,6 +826,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   username?: boolean
   passwordHash?: boolean
   createdAt?: boolean
+  balance?: boolean
   updatedAt?: boolean
   country?: boolean | Prisma.User$countryArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -747,6 +838,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   username?: boolean
   passwordHash?: boolean
   createdAt?: boolean
+  balance?: boolean
   updatedAt?: boolean
   country?: boolean | Prisma.User$countryArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -758,10 +850,11 @@ export type UserSelectScalar = {
   username?: boolean
   passwordHash?: boolean
   createdAt?: boolean
+  balance?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "countryId" | "email" | "username" | "passwordHash" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "countryId" | "email" | "username" | "passwordHash" | "createdAt" | "balance" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   country?: boolean | Prisma.User$countryArgs<ExtArgs>
   favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>
@@ -789,6 +882,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     username: string
     passwordHash: string
     createdAt: Date
+    balance: runtime.Decimal
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
   composites: {}
@@ -1222,6 +1316,7 @@ export interface UserFieldRefs {
   readonly username: Prisma.FieldRef<"User", 'String'>
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly balance: Prisma.FieldRef<"User", 'Decimal'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
