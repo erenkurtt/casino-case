@@ -13,6 +13,8 @@ html, body {
   box-sizing: border-box;
   overflow-x: hidden;
   background: white;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 body {
