@@ -1,0 +1,65 @@
+.page {
+  max-width: 1180px;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+.header {
+  margin-bottom: 28px;
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+    font-weight: 800;
+    color: #111827;
+  }
+
+  p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 16px;
+  }
+}
+
+.emptyState {
+  margin-top: 48px;
+  padding: 48px 24px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 16px;
+  text-align: center;
+  background: #fafafa;
+
+  h2 {
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: #6b7280;
+  }
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #f3f4f6;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.cardActions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}

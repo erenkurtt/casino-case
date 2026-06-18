@@ -1,0 +1,166 @@
+.slotPage {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+.slotCard {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.slotHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.balanceBox {
+  h1 {
+    margin: 0 0 8px;
+    color: #111827;
+    font-size: 32px;
+    font-weight: 900;
+  }
+
+  p {
+    margin: 0;
+    color: #6b7280;
+  }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.reels {
+  margin-top: 36px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.reel {
+  width: 140px;
+  height: 140px;
+  border-radius: 22px;
+  border: 1px solid #e5e7eb;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111827;
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: capitalize;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.spinning {
+  animation: pulse 0.45s ease-in-out infinite alternate;
+}
+
+.resultBox {
+  margin-top: 28px;
+  text-align: center;
+}
+
+.resultMeta {
+  margin-top: 12px;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+.historyCard {
+  margin-top: 24px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+@keyframes pulse {
+  from {
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    transform: translateY(-6px) scale(1.03);
+  }
+}
+
+@media (max-width: 768px) {
+  .slotHeader {
+    align-items: stretch;
+  }
+
+  .controls {
+    width: 100%;
+  }
+
+  .reel {
+    width: 100px;
+    height: 100px;
+    font-size: 18px;
+  }
+}
+
+.reel {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 24px;
+  border: 1px solid #e5e7eb;
+  background: radial-gradient(circle at top, #ffffff 0%, #f3f4f6 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #111827;
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: capitalize;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.reelImage {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.reelLabel {
+  font-size: 14px;
+  font-weight: 800;
+  color: #374151;
+  text-transform: capitalize;
+}
+
+.spinning {
+  animation: reelSpin 0.22s linear infinite;
+}
+
+@keyframes reelSpin {
+  0% {
+    transform: translateY(-4px) scale(1);
+    filter: blur(0);
+  }
+
+  50% {
+    transform: translateY(4px) scale(1.04);
+    filter: blur(1px);
+  }
+
+  100% {
+    transform: translateY(-4px) scale(1);
+    filter: blur(0);
+  }
+}
