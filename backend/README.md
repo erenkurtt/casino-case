@@ -1,7 +1,31 @@
 # Casino Game Platform Backend
 
-A production-oriented backend API for a casino game platform.
-The project includes game listing, search/filter/sort/pagination, JWT authentication, favorite games, and an authenticated slot machine system with persistent spin history.
+This is the backend service for the Casino Game Platform full-stack assessment.
+
+The backend is built with **NestJS**, **TypeScript**, **PostgreSQL**, and **Prisma ORM**.
+It provides REST APIs for game listing, backend-powered search, JWT authentication, favorite games, protected slot machine gameplay, spin history, security middleware, Swagger API documentation, and database persistence.
+
+## Table of Contents
+
+* [Tech Stack](#tech-stack)
+* [Main Features](#main-features)
+* [Project Structure](#project-structure)
+* [Environment Variables](#environment-variables)
+* [Local Setup](#local-setup)
+* [Docker PostgreSQL Setup](#docker-postgresql-setup)
+* [Prisma Commands](#prisma-commands)
+* [Running the Backend](#running-the-backend)
+* [Swagger API Documentation](#swagger-api-documentation)
+* [Authentication Flow](#authentication-flow)
+* [API Endpoints](#api-endpoints)
+* [Slot Machine Rules](#slot-machine-rules)
+* [Database Design](#database-design)
+* [Search Optimization](#search-optimization)
+* [Middleware and Security](#middleware-and-security)
+* [Testing](#testing)
+* [Build](#build)
+* [Deployment Notes](#deployment-notes)
+* [AI Usage Disclosure](#ai-usage-disclosure)
 
 ## Tech Stack
 
@@ -11,57 +35,62 @@ The project includes game listing, search/filter/sort/pagination, JWT authentica
 * PostgreSQL
 * Prisma ORM
 * JWT Authentication
+* bcryptjs
 * Docker / Docker Compose
 * Swagger / OpenAPI
 * Jest
 
-## Features
+## Main Features
 
 ### Game Listing
 
-* List all games
-* Search by name, slug, or provider
-* Filter by provider, country, game type, and active status
-* Pagination
-* Sorting
-* Lightweight in-memory cache
-* PostgreSQL indexes for optimized search
+* Serves game data through a REST API.
+* Game data is imported from `game-data.json` into PostgreSQL.
+* Supports pagination.
+* Supports backend search.
+* Supports filtering by provider, country, game type, and active status.
+* Supports sorting.
+* Uses optimized PostgreSQL indexes for scalable search.
+
+### Search Functionality
+
+* Search is performed on the backend.
+* Frontend uses debouncing to reduce unnecessary requests.
+* Backend validates query parameters.
+* Backend includes caching and database indexes to reduce load.
 
 ### Authentication
 
-* User registration
-* User login
-* JWT-based authentication
-* Protected routes
-* Password hashing with bcryptjs
-* Authenticated user profile endpoint
-
-### Favorite Games
-
-* Authenticated users can add games to favorites
-* Authenticated users can remove favorite games
-* Authenticated users can list their favorite games
-* Favorite list supports pagination
+* User registration.
+* User login.
+* Password hashing with bcryptjs.
+* JWT-based authentication.
+* Protected endpoints using JWT guard.
+* Authenticated user profile endpoint.
 
 ### Slot Machine
 
-* Only authenticated users can spin
-* New users start with 20 coins
-* Bet amount must be between 0.50 and 5.00
-* Bet amount must increase by 0.50 steps
-* Balance is updated after every spin
-* Every spin is stored permanently
-* Spin history includes:
+* Only authenticated users can spin.
+* Newly registered users start with 20 coins.
+* User can select a bet amount between 0.50 and 5.00 coins.
+* Bet amount increases in 0.50 increments.
+* Every spin updates the user's balance.
+* Every spin is permanently stored in PostgreSQL.
+* Spin history includes reel results, bet amount, win/loss amount, balance before and after, timestamp, and optional game ID.
 
-  * User ID
-  * Optional game ID
-  * Reel results
-  * Bet amount
-  * Win amount
-  * Net amount
-  * Balance before spin
-  * Balance after spin
-  * Timestamp
+### Favorite Games
+
+* Authenticated users can add games to favorites.
+* Authenticated users can remove games from favorites.
+* Authenticated users can list their favorite games.
+* Favorite games are stored in a normalized join table.
+
+### Currency Conversion
+
+Currency conversion is implemented on the frontend using an external exchange-rate API.
+
+The backend stores balance only in coins.
+Currency conversion is for display purposes only and does not modify the stored user balance.
 
 ### API Documentation
 
@@ -71,237 +100,131 @@ Swagger documentation is available at:
 http://localhost:3000/api
 ```
 
-JWT-protected endpoints can be tested from Swagger by using the **Authorize** button and providing the access token returned from `/auth/login`.
-
 ## Project Structure
 
 ```text
-src
-├── auth
-│   ├── decorators
-│   ├── dto
-│   ├── guards
-│   ├── types
-│   ├── auth.controller.ts
-│   ├── auth.module.ts
-│   └── auth.service.ts
-├── common
-│   ├── filters
-│   └── middleware
-├── favorites
-│   ├── dto
-│   ├── favorites.controller.ts
-│   ├── favorites.module.ts
-│   └── favorites.service.ts
-├── games
-│   ├── dto
-│   ├── games.controller.ts
-│   ├── games.module.ts
-│   └── games.service.ts
+backend
 ├── prisma
-│   ├── prisma.module.ts
-│   └── prisma.service.ts
-├── slot
-│   ├── dto
-│   ├── types
-│   ├── slot.controller.ts
-│   ├── slot-machine.service.ts
-│   ├── slot.module.ts
-│   └── slot.service.ts
-├── app.module.ts
-└── main.ts
-```
-
-## Database Design
-
-The database is designed around the following main entities:
-
-```text
-User
-Casino
-GameType
-Country
-Game
-GameCountry
-UserFavoriteGame
-SpinHistory
-```
-
-### Main Relationships
-
-```text
-Casino 1 ─── N Game
-
-GameType 1 ─── N Game
-
-Country 1 ─── N User
-
-Game N ─── N Country
-through GameCountry
-
-User N ─── N Game
-through UserFavoriteGame
-
-User 1 ─── N SpinHistory
-
-Game 1 ─── N SpinHistory
-```
-
-### Important Tables
-
-#### users
-
-Stores registered users.
-
-Important fields:
-
-```text
-id
-email
-username
-password_hash
-balance
-country_id
-created_at
-updated_at
-```
-
-Each new user starts with a default balance of `20.00`.
-
-#### games
-
-Stores imported casino games.
-
-Important fields:
-
-```text
-id
-external_id
-casino_id
-game_type_id
-name
-slug
-provider_name
-thumbnail_url
-is_active
-created_at
-updated_at
-```
-
-#### user_favorite_games
-
-Stores user favorite games.
-
-Composite key:
-
-```text
-user_id + game_id
-```
-
-This prevents the same user from adding the same game more than once.
-
-#### spin_history
-
-Stores all slot machine spins permanently.
-
-Important fields:
-
-```text
-id
-user_id
-game_id
-round_id
-bet_amount
-win_amount
-net_amount
-balance_before
-balance_after
-reel_1
-reel_2
-reel_3
-currency
-result_data
-spun_at
-```
-
-## Slot Machine Rules
-
-The slot machine uses three reels.
-
-### Reel 1
-
-```text
-["cherry", "lemon", "apple", "lemon", "banana", "banana", "lemon", "lemon"]
-```
-
-### Reel 2
-
-```text
-["lemon", "apple", "lemon", "lemon", "cherry", "apple", "banana", "lemon"]
-```
-
-### Reel 3
-
-```text
-["lemon", "apple", "lemon", "apple", "cherry", "lemon", "banana", "lemon"]
-```
-
-### Payout Rules
-
-Matching is evaluated from left to right starting from Reel 1.
-
-```text
-3 cherries  => bet amount x 50
-2 cherries  => bet amount x 40
-
-3 apples    => bet amount x 20
-2 apples    => bet amount x 10
-
-3 bananas   => bet amount x 15
-2 bananas   => bet amount x 5
-
-3 lemons    => bet amount x 3
-```
-
-Important example:
-
-```text
-lemon, lemon, apple => no win
-```
-
-There is no payout for two lemons.
-
-### Balance Formula
-
-```text
-balance_after = balance_before - bet_amount + win_amount
-```
-
-### Example
-
-If the user has 20 coins and spins with 1 coin:
-
-```text
-Result: cherry, cherry, lemon
-Multiplier: x40
-Win amount: 40
-Net amount: 39
-Balance after: 20 - 1 + 40 = 59
+│   ├── migrations
+│   ├── seed-data
+│   ├── schema.prisma
+│   └── seed.ts
+├── scripts
+│   ├── setup-linux.sh
+│   └── setup-windows.ps1
+├── src
+│   ├── auth
+│   │   ├── constants
+│   │   ├── decorators
+│   │   ├── dto
+│   │   ├── guards
+│   │   ├── types
+│   │   ├── auth.controller.ts
+│   │   ├── auth.module.ts
+│   │   └── auth.service.ts
+│   ├── common
+│   │   ├── filters
+│   │   └── middleware
+│   ├── favorites
+│   │   ├── dto
+│   │   ├── favorites.controller.ts
+│   │   ├── favorites.module.ts
+│   │   └── favorites.service.ts
+│   ├── games
+│   │   ├── dto
+│   │   ├── games.controller.ts
+│   │   ├── games.module.ts
+│   │   └── games.service.ts
+│   ├── generated
+│   │   └── prisma
+│   ├── prisma
+│   │   ├── prisma.module.ts
+│   │   └── prisma.service.ts
+│   ├── slot
+│   │   ├── dto
+│   │   ├── types
+│   │   ├── slot.controller.ts
+│   │   ├── slot-machine.service.ts
+│   │   ├── slot.module.ts
+│   │   └── slot.service.ts
+│   ├── app.module.ts
+│   └── main.ts
+├── docker-compose.yml
+├── package.json
+├── prisma.config.ts
+└── README.md
 ```
 
 ## Environment Variables
 
 Create a `.env` file in the backend root directory.
 
+Example:
+
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/game_platform_db?schema=public"
-JWT_SECRET="super-secret-jwt-key-change-this"
+JWT_SECRET="change-this-secret-in-production"
 PORT=3000
 ```
 
-For production, replace `JWT_SECRET` with a strong secret value.
+A sample file should be provided as:
 
-## Running PostgreSQL with Docker
+```text
+backend/.env.example
+```
+
+For production, use a strong `JWT_SECRET` and a production PostgreSQL connection string.
+
+## Local Setup
+
+### Linux / WSL
+
+From the project root:
+
+```bash
+cd backend
+cp .env.example .env
+npm install
+docker compose up -d
+npx prisma generate
+npx prisma migrate dev
+npx prisma db seed
+npm run start:dev
+```
+
+If the setup script is available:
+
+```bash
+cd backend
+chmod +x scripts/setup-linux.sh
+./scripts/setup-linux.sh
+```
+
+### Windows PowerShell
+
+From the project root:
+
+```powershell
+cd backend
+Copy-Item .env.example .env
+npm install
+docker compose up -d
+npx prisma generate
+npx prisma migrate dev
+npx prisma db seed
+npm run start:dev
+```
+
+If the setup script is available:
+
+```powershell
+cd backend
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows.ps1
+```
+
+## Docker PostgreSQL Setup
+
+The backend uses PostgreSQL as the primary database.
 
 Start PostgreSQL:
 
@@ -309,7 +232,7 @@ Start PostgreSQL:
 docker compose up -d
 ```
 
-Check container status:
+Check running containers:
 
 ```bash
 docker ps
@@ -321,27 +244,17 @@ Stop PostgreSQL:
 docker compose down
 ```
 
-The PostgreSQL database runs on:
+Default local database configuration:
 
 ```text
-localhost:5432
-```
-
-Default credentials:
-
-```text
+Host: localhost
+Port: 5432
 Database: game_platform_db
 Username: postgres
 Password: postgres
 ```
 
-## Installation
-
-Install dependencies:
-
-```bash
-npm install
-```
+## Prisma Commands
 
 Generate Prisma client:
 
@@ -349,45 +262,7 @@ Generate Prisma client:
 npx prisma generate
 ```
 
-Run database migrations:
-
-```bash
-npx prisma migrate dev
-```
-
-Seed the database:
-
-```bash
-npx prisma db seed
-```
-
-Start the development server:
-
-```bash
-npm run start:dev
-```
-
-The API will be available at:
-
-```text
-http://localhost:3000
-```
-
-Swagger documentation:
-
-```text
-http://localhost:3000/api
-```
-
-## Useful Prisma Commands
-
-Generate Prisma client:
-
-```bash
-npx prisma generate
-```
-
-Create and apply a new migration:
+Create and apply migrations:
 
 ```bash
 npx prisma migrate dev
@@ -399,16 +274,88 @@ Check migration status:
 npx prisma migrate status
 ```
 
+Seed database:
+
+```bash
+npx prisma db seed
+```
+
 Open Prisma Studio:
 
 ```bash
 npx prisma studio
 ```
 
-Seed database:
+Reset database during local development:
 
 ```bash
-npx prisma db seed
+npx prisma migrate reset
+```
+
+## Running the Backend
+
+Development mode:
+
+```bash
+npm run start:dev
+```
+
+Production mode:
+
+```bash
+npm run build
+npm run start:prod
+```
+
+Default API URL:
+
+```text
+http://localhost:3000
+```
+
+## Swagger API Documentation
+
+Swagger UI is available at:
+
+```text
+http://localhost:3000/api
+```
+
+JWT-protected endpoints can be tested from Swagger by clicking **Authorize** and entering the JWT access token returned by `/auth/login`.
+
+When using Swagger Authorize, paste only the token value. Swagger will add the `Bearer` prefix automatically.
+
+## Authentication Flow
+
+1. Register a user with:
+
+```http
+POST /auth/register
+```
+
+2. Login with:
+
+```http
+POST /auth/login
+```
+
+3. Copy the returned `accessToken`.
+
+4. Use it in protected requests:
+
+```http
+Authorization: Bearer <access_token>
+```
+
+Protected endpoints:
+
+```text
+GET    /auth/me
+GET    /favorites
+POST   /favorites/:gameId
+DELETE /favorites/:gameId
+POST   /slot/spin
+GET    /slot/history
 ```
 
 ## API Endpoints
@@ -485,13 +432,17 @@ GET /auth/me
 
 Requires JWT.
 
-Header:
+Response:
 
-```http
-Authorization: Bearer <access_token>
+```json
+{
+  "id": "user-uuid",
+  "email": "eren@test.com",
+  "username": "eren",
+  "balance": 20,
+  "createdAt": "2026-01-01T00:00:00.000Z"
+}
 ```
-
----
 
 ### Games
 
@@ -534,6 +485,7 @@ Response:
       "providerName": "BGaming",
       "thumbnailUrl": "https://example.com/image.webp",
       "isActive": true,
+      "createdAt": "2026-01-01T00:00:00.000Z",
       "casino": {
         "id": "casino-uuid",
         "name": "Default Casino"
@@ -562,26 +514,54 @@ Response:
     "sortBy": "createdAt",
     "sortOrder": "desc",
     "cacheHit": false
+  },
+  "filters": {
+    "search": "fire",
+    "providerName": "BGaming",
+    "country": null,
+    "gameType": null,
+    "isActive": true
   }
 }
 ```
 
----
-
 ### Favorites
 
-All favorites endpoints require JWT.
-
-Header:
-
-```http
-Authorization: Bearer <access_token>
-```
+All favorite endpoints require JWT.
 
 #### List Favorite Games
 
 ```http
 GET /favorites?page=1&limit=20
+```
+
+Response:
+
+```json
+{
+  "data": [
+    {
+      "favoritedAt": "2026-01-01T00:00:00.000Z",
+      "game": {
+        "id": "game-uuid",
+        "externalId": 9150,
+        "name": "Fire Lightning",
+        "slug": "fire-lightning",
+        "providerName": "BGaming",
+        "thumbnailUrl": "https://example.com/image.webp",
+        "isActive": true
+      }
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "total": 1,
+    "totalPages": 1,
+    "hasNextPage": false,
+    "hasPreviousPage": false
+  }
+}
 ```
 
 #### Add Favorite Game
@@ -596,6 +576,24 @@ Example:
 POST /favorites/b0f8f3d2-5a41-4f5a-b7e6-7baf4a2c1234
 ```
 
+Response:
+
+```json
+{
+  "message": "Game added to favorites",
+  "favoritedAt": "2026-01-01T00:00:00.000Z",
+  "game": {
+    "id": "game-uuid",
+    "externalId": 9150,
+    "name": "Fire Lightning",
+    "slug": "fire-lightning",
+    "providerName": "BGaming",
+    "thumbnailUrl": "https://example.com/image.webp",
+    "isActive": true
+  }
+}
+```
+
 #### Remove Favorite Game
 
 ```http
@@ -608,7 +606,14 @@ Example:
 DELETE /favorites/b0f8f3d2-5a41-4f5a-b7e6-7baf4a2c1234
 ```
 
----
+Response:
+
+```json
+{
+  "message": "Game removed from favorites",
+  "gameId": "game-uuid"
+}
+```
 
 ### Slot Machine
 
@@ -636,12 +641,6 @@ POST /slot/spin
 ```
 
 Requires JWT.
-
-Header:
-
-```http
-Authorization: Bearer <access_token>
-```
 
 Request body:
 
@@ -677,12 +676,6 @@ GET /slot/history?page=1&limit=20
 
 Requires JWT.
 
-Header:
-
-```http
-Authorization: Bearer <access_token>
-```
-
 Response:
 
 ```json
@@ -717,76 +710,152 @@ Response:
 }
 ```
 
-## Authentication Flow
+## Slot Machine Rules
 
-1. User registers with `/auth/register`
-2. User logs in with `/auth/login`
-3. API returns an `accessToken`
-4. The token is sent in protected requests:
+The slot machine consists of three reels with fixed symbols.
 
-```http
-Authorization: Bearer <access_token>
+### Reel 1
+
+```json
+["cherry", "lemon", "apple", "lemon", "banana", "banana", "lemon", "lemon"]
 ```
 
-Protected endpoints:
+### Reel 2
+
+```json
+["lemon", "apple", "lemon", "lemon", "cherry", "apple", "banana", "lemon"]
+```
+
+### Reel 3
+
+```json
+["lemon", "apple", "lemon", "apple", "cherry", "lemon", "banana", "lemon"]
+```
+
+For each spin, the backend randomly selects one symbol from each reel.
+
+The selected result is ordered from left to right:
 
 ```text
-GET    /auth/me
-GET    /favorites
-POST   /favorites/:gameId
-DELETE /favorites/:gameId
-POST   /slot/spin
-GET    /slot/history
+Reel 1 → Reel 2 → Reel 3
 ```
 
-## Security
+### Winning Rules
 
-The backend includes several security-focused features:
+```text
+3 cherries  => bet amount x 50
+2 cherries  => bet amount x 40
 
-* Passwords are hashed using bcryptjs
-* JWT authentication for protected routes
-* Global validation pipe
-* Request body whitelist
-* Unknown request fields are rejected
-* Helmet middleware
-* CORS configuration
-* Rate limiting
-* Centralized HTTP exception filter
+3 apples    => bet amount x 20
+2 apples    => bet amount x 10
 
-## Validation
+3 bananas   => bet amount x 15
+2 bananas   => bet amount x 5
 
-The backend validates request bodies and query parameters with `class-validator` and `class-transformer`.
+3 lemons    => bet amount x 3
+```
+
+There is no payout for two lemons.
+
+### Matching Rules
+
+A match is only valid when symbols appear consecutively from left to right, starting with Reel 1.
 
 Examples:
 
-* Email must be valid
-* Password must be at least 8 characters
-* Username can only contain letters, numbers, and underscore
-* Bet amount must be between 0.50 and 5.00
-* Bet amount must be one of the allowed 0.50-step values
-* Pagination values must be positive integers
-* UUID path parameters must be valid UUIDs
+```text
+Apple, Cherry, Apple     => No win
+Apple, Apple, Cherry     => Win, 2 apples
+Cherry, Cherry, Lemon    => Win, 2 cherries
+Banana, Banana, Banana   => Win, 3 bananas
+Lemon, Lemon, Lemon      => Win, 3 lemons
+Lemon, Lemon, Apple      => No win
+```
+
+Only the highest applicable payout is awarded. Payouts are not cumulative.
+
+### Balance Update Formula
+
+```text
+new_balance = previous_balance - bet_amount + winnings
+```
+
+The selected bet amount is deducted before calculating winnings.
+
+If the user does not have sufficient balance, the spin is rejected.
+
+## Database Design
+
+The database is normalized around the following entities:
+
+```text
+Users
+Casinos
+Games
+Game Types
+Countries
+Game Countries
+User Favorite Games
+Spin History
+```
+
+Main relationships:
+
+```text
+A casino contains multiple games.
+Each game belongs to one game type.
+Games can be available in multiple countries.
+Users can favorite multiple games.
+Every spin is permanently recorded.
+Spin history belongs to a user and can optionally belong to a game.
+```
+
+Detailed ER diagram, SQL CREATE TABLE statements, primary keys, foreign keys, indexes, and constraints are documented in:
+
+```text
+../docs/database-schema.md
+```
 
 ## Search Optimization
 
-Game search is optimized using PostgreSQL indexes.
+The game search endpoint is optimized using multiple techniques.
 
-Implemented optimizations include:
+### Frontend Debouncing
 
-* Trigram search indexes on game name, slug, and provider name
-* Indexes for active games and creation date
-* Indexes for active games and provider name
-* In-memory response cache for repeated game listing requests
+The frontend waits before sending search requests while the user types.
+This reduces unnecessary API calls.
 
-PostgreSQL extension:
+### Backend Validation
+
+Query parameters are validated with `class-validator` and `class-transformer`.
+
+Examples:
+
+```text
+page must be a positive integer
+limit must be between 1 and 50
+search must be at least 2 characters
+sortBy must be one of the allowed values
+sortOrder must be asc or desc
+```
+
+### Pagination
+
+The backend returns paginated data instead of loading all games at once.
+
+### In-Memory Cache
+
+Repeated game listing requests are cached for a short period to reduce repeated database queries.
+
+### PostgreSQL Indexing
+
+The backend uses PostgreSQL indexes and trigram search indexes.
+
+Example:
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
-```
 
-Example indexes:
-
-```sql
 CREATE INDEX IF NOT EXISTS idx_games_name_trgm
 ON games USING GIN (name gin_trgm_ops);
 
@@ -795,6 +864,65 @@ ON games USING GIN (slug gin_trgm_ops);
 
 CREATE INDEX IF NOT EXISTS idx_games_provider_name_trgm
 ON games USING GIN (provider_name gin_trgm_ops);
+```
+
+Additional indexes are used for active games, provider filtering, creation date sorting, spin history lookups, and favorite game lookups.
+
+## Middleware and Security
+
+The backend includes several security and robustness features.
+
+### Implemented Middleware / Guards / Pipes
+
+* Helmet security headers.
+* CORS configuration.
+* Global validation pipe.
+* Request body whitelist.
+* Rejection of unknown request fields.
+* JWT authentication guard.
+* Rate limiting with NestJS throttler.
+* Request logging middleware.
+* Centralized HTTP exception filter.
+
+### Validation
+
+All request bodies and query parameters are validated.
+
+Examples:
+
+* Email must be valid.
+* Password must be at least 8 characters.
+* Username must have valid characters.
+* Bet amount must be between 0.50 and 5.00.
+* Bet amount must be one of the allowed 0.50 increment options.
+* UUID path parameters are validated.
+* Pagination values are validated.
+
+### Password Security
+
+Passwords are never stored as plain text.
+They are hashed with bcryptjs before being saved in the database.
+
+### Authentication
+
+Protected endpoints require a valid JWT access token.
+
+Invalid or missing tokens return an unauthorized response.
+
+## Error Handling
+
+The backend uses a centralized HTTP exception filter to return consistent error responses.
+
+Example:
+
+```json
+{
+  "success": false,
+  "statusCode": 401,
+  "message": "Missing or invalid Authorization header",
+  "timestamp": "2026-01-01T00:00:00.000Z",
+  "path": "/slot/spin"
+}
 ```
 
 ## Testing
@@ -811,7 +939,13 @@ Run tests with coverage:
 npm run test:cov
 ```
 
-Current test coverage includes:
+Run a specific test file:
+
+```bash
+npm run test -- auth.service.spec.ts
+```
+
+The backend test suite covers:
 
 ```text
 AuthService
@@ -826,18 +960,22 @@ FavoritesService
 FavoritesController
 ```
 
-The tests cover:
+Covered scenarios include:
 
-* User registration
-* User login
-* JWT guard behavior
-* Game listing
-* Search/filter/pagination
-* Slot payout rules
-* Slot balance updates
-* Spin history creation
-* Favorite game creation/removal
-* Protected controller behavior
+* User registration.
+* Duplicate user prevention.
+* User login.
+* Invalid credential handling.
+* JWT guard behavior.
+* Game listing.
+* Search/filter/pagination.
+* Favorite game add/remove/list.
+* Slot payout rules.
+* Lemon, Lemon, Apple no-win rule.
+* Insufficient balance handling.
+* Balance update after spin.
+* Permanent spin history creation.
+* Controller-to-service integration.
 
 ## Build
 
@@ -857,17 +995,11 @@ npm run start:prod
 
 ```bash
 docker compose up -d
-
 npm install
-
 npx prisma generate
-
 npx prisma migrate dev
-
 npx prisma db seed
-
 npm run test
-
 npm run start:dev
 ```
 
@@ -879,13 +1011,23 @@ http://localhost:3000/api
 
 ## Deployment Notes
 
-The backend is ready to be deployed to cloud providers such as:
+The backend can be deployed to cloud platforms such as:
 
-* Render
-* Railway
-* AWS
-* Azure
-* Google Cloud Platform
+```text
+Render
+Railway
+AWS
+Azure
+Google Cloud Platform
+```
+
+Recommended deployment setup:
+
+```text
+Backend API: Render / Railway / AWS / Azure / GCP
+Database: Managed PostgreSQL, Neon, Railway PostgreSQL, Render PostgreSQL
+Frontend: Vercel / Netlify / Cloud provider static hosting
+```
 
 Required production environment variables:
 
@@ -895,16 +1037,46 @@ JWT_SECRET="strong-production-secret"
 PORT=3000
 ```
 
-For production deployments:
+Production recommendations:
 
-* Use a managed PostgreSQL instance
-* Use a strong JWT secret
-* Run migrations during deployment
-* Do not commit `.env`
-* Configure CORS for the deployed frontend URL
-* Use HTTPS
-* Store secrets in the cloud provider's secret manager
+* Use a managed PostgreSQL database.
+* Use a strong JWT secret.
+* Do not commit `.env`.
+* Run Prisma migrations during deployment.
+* Configure CORS for the deployed frontend URL.
+* Use HTTPS.
+* Store secrets in the cloud provider's secret manager.
+* Avoid using development credentials in production.
 
-## License
+## AI Usage Disclosure
 
-This project was developed as part of a full-stack JavaScript developer assessment.
+AI-assisted tools were used during development.
+
+They helped with:
+
+* Planning the backend architecture.
+* Reviewing database relationships.
+* Creating NestJS module/service/controller structures.
+* Drafting DTO validation patterns.
+* Drafting unit test cases.
+* Debugging Prisma, ESM/CommonJS, Windows, and WSL environment issues.
+* Improving Swagger documentation.
+* Improving README and project documentation.
+
+All generated code was reviewed, tested, modified, and adapted manually before being used.
+
+The final implementation decisions, endpoint behavior, database schema, validation rules, and test results were verified during development.
+
+## Notes
+
+This backend was developed as part of a full-stack JavaScript developer assessment.
+
+It focuses on:
+
+* Clean architecture.
+* Normalized relational database design.
+* Secure authentication.
+* Validated REST API design.
+* Search scalability.
+* Persistent slot machine transaction history.
+* Clear documentation and test coverage.

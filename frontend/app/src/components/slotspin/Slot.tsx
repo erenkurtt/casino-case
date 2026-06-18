@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Button, Card, Select, Table, Tag } from "antd";
+import { Alert, Button, Card, Grid, Select, Table, Tag } from "antd";
 import { useRouter } from "next/navigation";
 import {
     getBetOptions,
@@ -20,6 +20,8 @@ const SLOT_SYMBOLS = ["apple", "banana", "cherry", "lemon"] as const;
 
 type SlotSymbol = (typeof SLOT_SYMBOLS)[number];
 
+const { useBreakpoint } = Grid;
+
 const symbolImages: Record<SlotSymbol, string> = {
     apple: "/slot-symbols/apple.svg",
     banana: "/slot-symbols/banana.svg",
@@ -37,6 +39,8 @@ function isSlotSymbol(value: string): value is SlotSymbol {
 
 const Slot: React.FC = () => {
     const router = useRouter();
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;
 
     const [user, setUser] = useState<User | null>(null);
     const [betOptions, setBetOptions] = useState<number[]>([]);
@@ -237,42 +241,92 @@ const Slot: React.FC = () => {
             </Card>
 
             <Card title="Spin History" className={styles.historyCard}>
-                <Table
-                    rowKey="id"
-                    dataSource={history}
-                    pagination={false}
-                    columns={[
-                        {
-                            title: "Reels",
-                            dataIndex: "reels",
-                            render: (reels: string[]) => reels.join(" - "),
-                        },
-                        {
-                            title: "Bet",
-                            dataIndex: "betAmount",
-                        },
-                        {
-                            title: "Win",
-                            dataIndex: "winAmount",
-                        },
-                        {
-                            title: "Net",
-                            dataIndex: "amountWonLost",
-                            render: (value: number) => (
-                                <Tag color={value >= 0 ? "green" : "red"}>{value}</Tag>
-                            ),
-                        },
-                        {
-                            title: "Balance After",
-                            dataIndex: "balanceAfter",
-                        },
-                        {
-                            title: "Date",
-                            dataIndex: "spunAt",
-                            render: (value: string) => new Date(value).toLocaleString(),
-                        },
-                    ]}
-                />
+                {isMobile ? (
+                    <div className={styles.historyMobileList}>
+                        {history.length === 0 ? (
+                            <div className={styles.emptyHistory}>No spin history yet.</div>
+                        ) : (
+                            history.map((item) => (
+                                <div key={item.id} className={styles.historyMobileCard}>
+                                    <div className={styles.historyMobileHeader}>
+                                        <div>
+                                            <span className={styles.historyLabel}>Reels</span>
+                                            <strong>{item.reels.join(" - ")}</strong>
+                                        </div>
+
+                                        <Tag color={item.amountWonLost >= 0 ? "green" : "red"}>
+                                            {item.amountWonLost >= 0 ? "+" : ""}
+                                            {item.amountWonLost}
+                                        </Tag>
+                                    </div>
+
+                                    <div className={styles.historyGrid}>
+                                        <div>
+                                            <span>Bet</span>
+                                            <strong>{item.betAmount}</strong>
+                                        </div>
+
+                                        <div>
+                                            <span>Win</span>
+                                            <strong>{item.winAmount}</strong>
+                                        </div>
+
+                                        <div>
+                                            <span>Balance</span>
+                                            <strong>{item.balanceAfter}</strong>
+                                        </div>
+
+                                        <div>
+                                            <span>Date</span>
+                                            <strong>{new Date(item.spunAt).toLocaleDateString()}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                ) : (
+                    <Table
+                        rowKey="id"
+                        dataSource={history}
+                        pagination={false}
+                        scroll={{ x: 720 }}
+                        columns={[
+                            {
+                                title: "Reels",
+                                dataIndex: "reels",
+                                render: (reels: string[]) => reels.join(" - "),
+                            },
+                            {
+                                title: "Bet",
+                                dataIndex: "betAmount",
+                            },
+                            {
+                                title: "Win",
+                                dataIndex: "winAmount",
+                            },
+                            {
+                                title: "Net",
+                                dataIndex: "amountWonLost",
+                                render: (value: number) => (
+                                    <Tag color={value >= 0 ? "green" : "red"}>
+                                        {value >= 0 ? "+" : ""}
+                                        {value}
+                                    </Tag>
+                                ),
+                            },
+                            {
+                                title: "Balance After",
+                                dataIndex: "balanceAfter",
+                            },
+                            {
+                                title: "Date",
+                                dataIndex: "spunAt",
+                                render: (value: string) => new Date(value).toLocaleString(),
+                            },
+                        ]}
+                    />
+                )}
             </Card>
         </div>
     );
