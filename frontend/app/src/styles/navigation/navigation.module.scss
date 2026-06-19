@@ -3,7 +3,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid #eeeeee;
 }
@@ -39,6 +39,7 @@
   justify-content: center;
   gap: 8px;
   flex: 1;
+  min-width: 0;
 }
 
 .navItem {
@@ -49,6 +50,7 @@
   font-size: 16px;
   font-weight: 700;
   transition: all 0.2s ease;
+  text-align: center;
 
   &:hover {
     color: #1677ff;
@@ -71,7 +73,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
-  white-space: nowrap;
+  min-width: 0;
 }
 
 .authButton {
@@ -84,6 +86,7 @@
   border: 1px solid #d9e8ff;
   background: #ffffff;
   transition: all 0.2s ease;
+  text-align: center;
 
   &:hover {
     color: #0958d9;
@@ -116,6 +119,7 @@
   border-radius: 12px;
   background: #f5f7fa;
   border: 1px solid #e5e7eb;
+  min-width: 0;
 }
 
 .username {
@@ -148,63 +152,82 @@
 
 @media (max-width: 768px) {
   .header {
-    position: sticky;
-    top: 0;
     background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
   }
 
   .navbar {
     width: 100%;
     max-width: 100%;
-    padding: 10px 14px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
+    margin: 0;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 8px;
+    overflow: hidden;
   }
 
   .brand {
+    width: 100%;
+    display: block;
     text-align: center;
     font-size: 22px;
     line-height: 1.2;
+    white-space: normal;
   }
 
   .navLinks {
     width: 100%;
+    flex: none;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    background: #f3f4f6;
-    padding: 6px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 6px;
+    padding: 5px;
     border-radius: 999px;
+    background: #f3f4f6;
+    overflow: hidden;
   }
 
   .navItem {
     width: 100%;
-    padding: 9px 10px;
-    text-align: center;
-    font-size: 14px;
+    min-width: 0;
+    padding: 9px 8px;
     border-radius: 999px;
+    font-size: 14px;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .authArea {
     width: 100%;
+    min-width: 0;
+    flex: none;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 6px;
+    overflow: hidden;
   }
 
   .authButton {
     width: 100%;
-    padding: 9px 10px;
-    text-align: center;
-    font-size: 14px;
+    min-width: 0;
+    max-width: 100%;
+    padding: 9px 8px;
     border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .userBadge {
     grid-column: 1 / -1;
     width: 100%;
+    max-width: 100%;
     align-items: center;
     padding: 8px 10px;
   }
@@ -212,6 +235,7 @@
   .logoutButton {
     grid-column: 1 / -1;
     width: 100%;
+    max-width: 100%;
     padding: 10px;
   }
 }
@@ -219,21 +243,15 @@
 @media (max-width: 420px) {
   .navbar {
     padding: 8px 10px;
-    gap: 8px;
   }
 
   .brand {
     font-size: 20px;
   }
 
-  .navLinks {
-    gap: 6px;
-    padding: 5px;
-  }
-
   .navItem,
   .authButton {
     font-size: 13px;
-    padding: 8px;
+    padding: 8px 6px;
   }
 }
