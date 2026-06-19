@@ -159,83 +159,71 @@
     width: 100%;
     max-width: 100%;
     margin: 0;
-    padding: 10px 12px;
+    padding: 10px 14px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    justify-content: flex-start;
-    gap: 8px;
+    gap: 10px;
     overflow: hidden;
   }
 
   .brand {
     width: 100%;
-    display: block;
     text-align: center;
     font-size: 22px;
     line-height: 1.2;
-    white-space: normal;
   }
 
   .navLinks {
     width: 100%;
-    flex: none;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 6px;
-    padding: 5px;
-    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 16px;
     background: #f3f4f6;
     overflow: hidden;
   }
 
   .navItem {
-    width: 100%;
+    flex: 1 1 0;
     min-width: 0;
-    padding: 9px 8px;
-    border-radius: 999px;
-    font-size: 14px;
-    line-height: 1.2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 38px;
+    padding: 0 8px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 38px;
+    text-align: center;
+    white-space: nowrap;
   }
 
   .authArea {
     width: 100%;
-    min-width: 0;
-    flex: none;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 6px;
+    display: flex;
+    gap: 8px;
     overflow: hidden;
   }
 
   .authButton {
-    width: 100%;
+    flex: 1 1 0;
     min-width: 0;
-    max-width: 100%;
-    padding: 9px 8px;
-    border-radius: 10px;
-    font-size: 14px;
-    line-height: 1.2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 38px;
+    padding: 0 8px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 38px;
+    text-align: center;
+    white-space: nowrap;
   }
 
   .userBadge {
-    grid-column: 1 / -1;
     width: 100%;
-    max-width: 100%;
     align-items: center;
     padding: 8px 10px;
   }
 
   .logoutButton {
-    grid-column: 1 / -1;
     width: 100%;
-    max-width: 100%;
     padding: 10px;
   }
 }
@@ -251,7 +239,9 @@
 
   .navItem,
   .authButton {
-    font-size: 13px;
-    padding: 8px 6px;
+    font-size: 12px;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 6px;
   }
 }
