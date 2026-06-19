@@ -94,7 +94,7 @@ const BalanceConverter: React.FC<BalanceConverterProps> = ({
       <div className={styles.controls}>
         <Select
           value={targetCurrency}
-          style={{ minWidth: 210 }}
+          className={styles.currencySelect}
           onChange={(value: string) => setTargetCurrency(value)}
           options={CURRENCY_OPTIONS}
         />
